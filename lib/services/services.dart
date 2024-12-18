@@ -1,0 +1,1 @@
+export 'package:seminario_8_pmdm/services/products_service.dart';
