@@ -88,6 +88,7 @@ class _RegisterForm extends StatelessWidget {
               },
               onChanged: (value) => loginForm.email = value,
             ),
+            /*
             TextFormField(
               keyboardType: TextInputType.phone,
               decoration: InputDecorations.authInputDecoration(
@@ -103,6 +104,8 @@ class _RegisterForm extends StatelessWidget {
               },
               onChanged: (value) => loginForm.phone = value,
             ),
+            */
+            /*
             DropdownButtonFormField<String>(
               decoration: InputDecorations.authInputDecoration(
                 labelText: 'Sexo',
@@ -124,6 +127,8 @@ class _RegisterForm extends StatelessWidget {
                   ? null
                   : 'Seleccione un sexo',
             ),
+            */
+            /*
             TextFormField(
               readOnly: true,
               controller: TextEditingController(
@@ -152,6 +157,7 @@ class _RegisterForm extends StatelessWidget {
                   ? null
                   : 'Seleccione una fecha válida',
             ),
+            */
             TextFormField(
               autocorrect: false,
               obscureText: true,
@@ -188,7 +194,10 @@ class _RegisterForm extends StatelessWidget {
               onChanged: (value) => loginForm.confirmPassword = value,
             ),
             SizedBox(height: 15),
-            LoginBtn(loginForm: loginForm)
+            LoginBtn(
+              loginForm: loginForm,
+              isRegister: true,
+            )
           ],
         ),
       ),

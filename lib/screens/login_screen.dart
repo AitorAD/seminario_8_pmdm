@@ -101,8 +101,10 @@ class _LoginForm extends StatelessWidget {
               onChanged: (value) => loginForm.password = value,
             ),
             SizedBox(height: 35),
-            
-            LoginBtn(loginForm: loginForm)
+            LoginBtn(
+              loginForm: loginForm,
+              isRegister: false,
+            )
           ],
         ),
       ),

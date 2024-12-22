@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:seminario_8_pmdm/models/product.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsService extends ChangeNotifier {
   final String _baseUrl = 'seminario-7-default-rtdb.firebaseio.com';
+  final storage = const FlutterSecureStorage();
 
   final List<Product> products = [];
   bool isLoading = true;
@@ -22,9 +24,14 @@ class ProductsService extends ChangeNotifier {
     this.isLoading = true;
     notifyListeners();
 
-    final url = Uri.https(_baseUrl, '/products.json');
+    final token = await storage.read(key: 'token') ?? '';
+
+    final url = Uri.https(_baseUrl, '/products.json', {
+      'auth': token,
+    });
     final resp = await http.get(url);
 
+    print('respuesta load: ${resp.body}');
     final Map<String, dynamic> productsMap = jsonDecode(resp.body);
 
     productsMap.forEach((key, value) {
@@ -41,7 +48,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future<String> updateProduct(Product product) async {
-    final url = Uri.https(_baseUrl, '/products/${product.id}.json');
+    final url = Uri.https(_baseUrl, '/products/${product.id}.json', {
+      'auth': await storage.read(key: 'token') ?? '',
+    });
     final resp = await http.put(url, body: product.toJson());
     final decodedData = resp.body;
 
@@ -54,7 +63,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future<String> createProduct(Product product) async {
-    final url = Uri.https(_baseUrl, '/products.json');
+    final url = Uri.https(_baseUrl, '/products.json', {
+      'auth': await storage.read(key: 'token') ?? '',
+    });
     final resp = await http.post(url, body: product.toJson());
     final decodedData = json.decode(resp.body);
 
@@ -66,7 +77,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future<bool> deleteProduct(Product product) async {
-    final url = Uri.https(_baseUrl, '/products/${product.id}.json');
+    final url = Uri.https(_baseUrl, '/products/${product.id}.json', {
+      'auth': await storage.read(key: 'token') ?? '',
+    });
     final resp = await http.delete(url, body: product.toJson());
 
     if (resp.statusCode == 200) {
